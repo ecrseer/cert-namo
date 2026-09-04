@@ -153,6 +153,7 @@ button { color: inherit; }
 .estado-vazio h1 { margin-top: 0; font-size: 22px; }
 .estado-vazio p { font-size: 12px; line-height: 1.6; }
 .estado-vazio a { color: oklch(45% 0.13 15); font-size: 12px; font-weight: 700; }
+p:not(.nome-publico) { font-size: 12px; }
 
 @media (max-width: 370px) {
   .app-shell { padding-right: 11px; padding-left: 11px; }

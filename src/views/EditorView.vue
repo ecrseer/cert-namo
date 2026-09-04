@@ -64,6 +64,7 @@ function atualizarCampo(campo, valor) {
 async function copiarLink() {
   const slug = criarSlug(dados)
   salvarCertidao(slug, { ...dados })
+  console.log("nvim")
   const url = `${window.location.origin}/c/${slug}`
 
   try {
