@@ -1,10 +1,5 @@
 <template>
   <main class="app-shell">
-    <header class="cabecalho-app">
-      <p @click="cdnVerc">Certidão de Namorado</p>
-      <span>Prova nao-oficial do seu amor</span>
-    </header>
-
     <CertidaoDocumento :dados="dados" editavel @atualizar="atualizarCampo" />
 
     <section class="seletor-cores" aria-label="Cor de destaque">
@@ -24,10 +19,7 @@
     </section>
 
     <aside v-if="showBanner" class="banner">
-      <p>
-        <strong>Em breve:</strong> editor completo pra mudar layout, fundo e
-        fontes.
-      </p>
+      <p>Adicione foto do casal: Crie um perfil!</p>
       <button
         type="button"
         aria-label="Fechar aviso"
@@ -44,11 +36,11 @@
       :style="{ '--accent': coresDeDestaque[dados.accentKey] }"
     >
       <button class="botao-primario" type="button" @click="copiarLink">
-        Copiar link da certidão
+        Firmar namoro
       </button>
-      <button class="botao-secundario" type="button" @click="avisarDownload">
-        baixar imagem em vez disso
-      </button>
+      <div class="botao-secundario">
+        <p>Livro do Coração — Folha Única</p>
+      </div>
     </div>
 
     <Transition name="toast">
