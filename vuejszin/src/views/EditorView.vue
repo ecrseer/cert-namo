@@ -1,7 +1,7 @@
 <template>
   <main class="app-shell">
     <header class="cabecalho-app">
-      <p>Certidão de Namorado</p>
+      <p @click="cdnVerc">Certidão de Namorado</p>
       <span>Prova nao-oficial do seu amor</span>
     </header>
 
@@ -24,15 +24,31 @@
     </section>
 
     <aside v-if="showBanner" class="banner">
-      <p><strong>Em breve:</strong> editor completo pra mudar layout, fundo e fontes.</p>
-      <button type="button" aria-label="Fechar aviso" @click="showBanner = false">×</button>
+      <p>
+        <strong>Em breve:</strong> editor completo pra mudar layout, fundo e
+        fontes.
+      </p>
+      <button
+        type="button"
+        aria-label="Fechar aviso"
+        @click="showBanner = false"
+      >
+        ×
+      </button>
     </aside>
 
     <div class="espaco-acoes"></div>
 
-    <div class="acoes" :style="{ '--accent': coresDeDestaque[dados.accentKey] }">
-      <button class="botao-primario" type="button" @click="copiarLink">Copiar link da certidão</button>
-      <button class="botao-secundario" type="button" @click="avisarDownload">baixar imagem em vez disso</button>
+    <div
+      class="acoes"
+      :style="{ '--accent': coresDeDestaque[dados.accentKey] }"
+    >
+      <button class="botao-primario" type="button" @click="copiarLink">
+        Copiar link da certidão
+      </button>
+      <button class="botao-secundario" type="button" @click="avisarDownload">
+        baixar imagem em vez disso
+      </button>
     </div>
 
     <Transition name="toast">
@@ -42,48 +58,63 @@
 </template>
 
 <script setup>
-import { reactive, ref } from 'vue'
-import CertidaoDocumento from '../components/CertidaoDocumento.vue'
-import { coresDeDestaque, criarSlug, dadosIniciais, salvarCertidao } from '../certidao'
+import { reactive, ref } from "vue";
+import CertidaoDocumento from "../components/CertidaoDocumento.vue";
+import {
+  coresDeDestaque,
+  criarSlug,
+  dadosIniciais,
+  salvarCertidao,
+} from "../certidao";
 
-const dados = reactive({ ...dadosIniciais })
-const showBanner = ref(true)
-const toast = ref('')
-let temporizadorDoToast
+const dados = reactive({ ...dadosIniciais });
+const showBanner = ref(true);
+const toast = ref("");
+let temporizadorDoToast;
 
 const nomesDasCores = {
-  burgundy: 'Vinho',
-  gold: 'Dourado',
-  teal: 'Verde-azulado',
-}
+  burgundy: "Vinho",
+  gold: "Dourado",
+  teal: "Verde-azulado",
+};
 
 function atualizarCampo(campo, valor) {
-  dados[campo] = valor
+  dados[campo] = valor;
 }
 
 async function copiarLink() {
-  const slug = criarSlug(dados)
-  salvarCertidao(slug, { ...dados })
-  console.log("nvim")
-  const url = `${window.location.origin}/c/${slug}`
+  const slug = criarSlug(dados);
+  salvarCertidao(slug, { ...dados });
+  console.log("nvim");
+  const url = `${window.location.origin}/c/${slug}`;
 
   try {
-    await navigator.clipboard.writeText(url)
-    exibirToast('Link copiado! Cole no WhatsApp ou Instagram.')
+    await navigator.clipboard.writeText(url);
+    exibirToast("Link copiado! Cole no WhatsApp ou Instagram.");
   } catch {
-    exibirToast(`Link criado: ${url}`)
+    exibirToast(`Link criado: ${url}`);
+  }
+  await cdnVerc();
+}
+
+async function cdnVerc() {
+  try {
+    const res = await fetch("/vrcel/hello");
+    const data = await res.json();
+  } catch (er) {
+    console.warn("cdnVvv::: \n" + er);
   }
 }
 
 function avisarDownload() {
-  exibirToast('Download de imagem chega em breve.')
+  exibirToast("Download de imagem chega em breve.");
 }
 
 function exibirToast(mensagem) {
-  clearTimeout(temporizadorDoToast)
-  toast.value = mensagem
+  clearTimeout(temporizadorDoToast);
+  toast.value = mensagem;
   temporizadorDoToast = setTimeout(() => {
-    toast.value = ''
-  }, 2200)
+    toast.value = "";
+  }, 2200);
 }
 </script>
