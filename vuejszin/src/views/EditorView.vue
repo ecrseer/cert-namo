@@ -2,7 +2,7 @@
   <main class="app-shell">
     <header class="cabecalho-app">
       <p>Certidão de Namorado</p>
-      <span>Prova oficial (não really) do seu amor</span>
+      <span>Prova nao-oficial do seu amor</span>
     </header>
 
     <CertidaoDocumento :dados="dados" editavel @atualizar="atualizarCampo" />

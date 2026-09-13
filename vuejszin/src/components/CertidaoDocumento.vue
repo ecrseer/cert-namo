@@ -61,7 +61,9 @@
 
     <section class="clausula">
       <h2>Cláusula única</h2>
-      <p>O presente vínculo obriga ambas as partes a dividir a batata frita, assistir séries no mesmo ritmo e jamais dormir de mau humor, sob pena de multa em forma de abraço.</p>
+      <p>O presente vínculo obriga ambas as partes a dividir a batata frita,
+         assistir séries no mesmo ritmo e jamais dormir de mau humor, sob pena
+          de multa em forma de abraço.</p>
     </section>
 
     <section class="assinaturas">
