@@ -1,8 +1,8 @@
 {
   "rewrites": [
     {
-      "source": "/c/:id",
-      "destination": "/api/certidao?id=:id"
+      "source": "/c/:publicId",
+      "destination": "/index.html"
     }
   ]
 }
