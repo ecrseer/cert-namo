@@ -1,19 +1,23 @@
 <template>
   <main class="app-shell">
-    <CertidaoDocumento :dados="dados" editavel @atualizar="atualizarCampo" />
+    <CertificateDocument
+      :certificate="certificate"
+      editable
+      @update="updateField"
+    />
 
     <section class="seletor-cores" aria-label="Cor de destaque">
       <span>Escolha a cor do selo</span>
       <div>
         <button
-          v-for="(cor, chave) in coresDeDestaque"
-          :key="chave"
+          v-for="(color, key) in accentColors"
+          :key="key"
           type="button"
-          :aria-label="nomesDasCores[chave]"
-          :aria-pressed="dados.accentKey === chave"
-          :class="{ selecionada: dados.accentKey === chave }"
-          :style="{ '--cor': cor }"
-          @click="dados.accentKey = chave"
+          :aria-label="colorNames[key]"
+          :aria-pressed="certificate.accentKey === key"
+          :class="{ selecionada: certificate.accentKey === key }"
+          :style="{ '--color': color }"
+          @click="certificate.accentKey = key"
         ></button>
       </div>
     </section>
@@ -33,10 +37,15 @@
 
     <div
       class="acoes"
-      :style="{ '--accent': coresDeDestaque[dados.accentKey] }"
+      :style="{ '--accent': accentColors[certificate.accentKey] }"
     >
-      <button class="botao-primario" type="button" @click="copiarLink">
-        Firmar namoro
+      <button
+        class="botao-primario"
+        type="button"
+        :disabled="isSaving"
+        @click="createAndCopyLink"
+      >
+        {{ isSaving ? "Salvando..." : "Firmar namoro" }}
       </button>
       <div class="botao-secundario">
         <p>Livro do Coração — Folha Única</p>
@@ -51,61 +60,77 @@
 
 <script setup>
 import { reactive, ref } from "vue";
-import CertidaoDocumento from "../components/CertidaoDocumento.vue";
+import CertificateDocument from "../components/CertificateDocument.vue";
 import {
-  coresDeDestaque,
-  criarSlug,
-  dadosIniciais,
-  salvarCertidao,
-} from "../certidao";
+  accentColors,
+  createCertificate,
+  initialCertificate,
+} from "../certificate";
 
-const dados = reactive({ ...dadosIniciais });
+const certificate = reactive({ ...initialCertificate });
 const showBanner = ref(true);
 const toast = ref("");
-let temporizadorDoToast;
+const isSaving = ref(false);
+let toastTimer;
 
-const nomesDasCores = {
+const colorNames = {
   burgundy: "Vinho",
   gold: "Dourado",
   teal: "Verde-azulado",
 };
 
-function atualizarCampo(campo, valor) {
-  dados[campo] = valor;
+function updateField(field, value) {
+  certificate[field] = value;
 }
 
-async function copiarLink() {
-  const slug = criarSlug(dados);
-  salvarCertidao(slug, { ...dados });
+async function createAndCopyLink() {
+  if (
+    !certificate.partnerOneName.trim() ||
+    !certificate.partnerTwoName.trim()
+  ) {
+    showToast("Preencha os dois nomes.");
+    return;
+  }
+
+  if (!certificate.coupleDate) {
+    showToast("Preencha a data de início do namoro.");
+    return;
+  }
+
   console.log("nvim");
-  const url = `${window.location.origin}/c/${slug}`;
+  isSaving.value = true;
 
   try {
-    await navigator.clipboard.writeText(url);
-    exibirToast("Link copiado! Cole no WhatsApp ou Instagram.");
-  } catch {
-    exibirToast(`Link criado: ${url}`);
+    const createdCertificate = await createCertificate({
+      ...certificate,
+      partnerOneName: certificate.partnerOneName.trim(),
+      partnerTwoName: certificate.partnerTwoName.trim(),
+      location: certificate.location.trim(),
+    });
+    const url = `${window.location.origin}/c/${createdCertificate.publicId}`;
+
+    try {
+      await navigator.clipboard.writeText(url);
+      showToast("Link copiado! Cole no WhatsApp ou Instagram.");
+    } catch {
+      showToast(`Link criado: ${url}`);
+    }
+  } catch (error) {
+    console.warn("cdnVvv::: \n" + error);
+    showToast(error.message || "Não foi possível salvar a certidão.");
+  } finally {
+    isSaving.value = false;
   }
-  await cdnVerc();
 }
 
-async function cdnVerc() {
-  try {
-    const res = await fetch("/vrcel/hello");
-    const data = await res.json();
-  } catch (er) {
-    console.warn("cdnVvv::: \n" + er);
-  }
+function showDownloadNotice() {
+  showToast("Download de imagem chega em breve.");
 }
 
-function avisarDownload() {
-  exibirToast("Download de imagem chega em breve.");
-}
-
-function exibirToast(mensagem) {
-  clearTimeout(temporizadorDoToast);
-  toast.value = mensagem;
-  temporizadorDoToast = setTimeout(() => {
+function showToast(message) {
+  clearTimeout(toastTimer);
+  toast.value = message;
+  toastTimer = setTimeout(() => {
     toast.value = "";
   }, 2200);
 }

@@ -1,4 +1,11 @@
-import { Controller, Post, Get, Body, Param } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  Param,
+  Post,
+  ValidationPipe,
+} from '@nestjs/common';
 import { CertificatesService } from './certificates.service.js';
 import { CreateCertificateDto } from './create-certificate.dto.js';
 import { Certificate } from './certificate.entity.js';
@@ -8,7 +15,16 @@ export class CertificatesController {
   constructor(private readonly certificatesService: CertificatesService) {}
 
   @Post()
-  async create(@Body() dto: CreateCertificateDto): Promise<Certificate> {
+  async create(
+    @Body(
+      new ValidationPipe({
+        forbidNonWhitelisted: true,
+        transform: true,
+        whitelist: true,
+      }),
+    )
+    dto: CreateCertificateDto,
+  ): Promise<Certificate> {
     return await this.certificatesService.create(dto);
   }
 

@@ -22,8 +22,35 @@ export class Certificate {
   @Column({ type: 'varchar', length: 64, unique: true })
   publicId: string;
 
+  @Column({
+    type: 'varchar',
+    length: 38,
+    name: 'partner_one_name',
+    default: '',
+  })
+  partnerOneName: string;
+
+  @Column({
+    type: 'varchar',
+    length: 38,
+    name: 'partner_two_name',
+    default: '',
+  })
+  partnerTwoName: string;
+
   @Column({ type: 'date', name: 'couple_date' })
   coupleDate: string;
+
+  @Column({ type: 'varchar', length: 48, default: '' })
+  location: string;
+
+  @Column({
+    type: 'varchar',
+    length: 16,
+    name: 'accent_key',
+    default: 'burgundy',
+  })
+  accentKey: string;
 
   @Column({ type: 'text', name: 'special_message', nullable: true })
   specialMessage: string | null;

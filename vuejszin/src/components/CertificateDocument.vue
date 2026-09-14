@@ -1,5 +1,5 @@
 <template>
-  <article class="documento" :style="{ '--accent': corDeDestaque }">
+  <article class="documento" :style="{ '--accent': accentColor }">
     <div class="fita">Selo de Qualidade</div>
 
     <h1>Certidão de Namoro</h1>
@@ -13,53 +13,57 @@
     </p>
 
     <input
-      v-if="editavel"
-      :value="dados.nome1"
+      v-if="editable"
+      :value="certificate.partnerOneName"
       class="campo-nome"
       aria-label="Nome da primeira pessoa"
       placeholder="Fulana(o)"
       maxlength="38"
-      @input="atualizarCampo('nome1', $event.target.value)"
+      @input="updateField('partnerOneName', $event.target.value)"
     />
-    <p v-else class="nome-publico">{{ dados.nome1 || "Fulana(o)" }}</p>
+    <p v-else class="nome-publico">
+      {{ certificate.partnerOneName || "Fulana(o)" }}
+    </p>
 
     <p class="conector">e</p>
 
     <input
-      v-if="editavel"
-      :value="dados.nome2"
+      v-if="editable"
+      :value="certificate.partnerTwoName"
       class="campo-nome"
       aria-label="Nome da segunda pessoa"
       placeholder="Ciclana(o)"
       maxlength="38"
-      @input="atualizarCampo('nome2', $event.target.value)"
+      @input="updateField('partnerTwoName', $event.target.value)"
     />
-    <p v-else class="nome-publico">{{ dados.nome2 || "Ciclana(o)" }}</p>
+    <p v-else class="nome-publico">
+      {{ certificate.partnerTwoName || "Ciclana(o)" }}
+    </p>
 
     <p class="texto-legal">
       doravante denominados “o Casal”, firmam união amorosa em
       <input
-        v-if="editavel"
-        :value="dados.local"
+        v-if="editable"
+        :value="certificate.location"
         class="campo-inline campo-local"
         aria-label="Local especial"
         placeholder="algum lugar especial"
         maxlength="48"
-        @input="atualizarCampo('local', $event.target.value)"
+        @input="updateField('location', $event.target.value)"
       />
       <strong v-else class="valor-publico">{{
-        dados.local || "algum lugar especial"
+        certificate.location || "algum lugar especial"
       }}</strong
       >, com efeitos retroativos a partir de
       <input
-        v-if="editavel"
-        :value="dados.data"
+        v-if="editable"
+        :value="certificate.coupleDate"
         class="campo-inline campo-data"
         aria-label="Data de início do namoro"
         type="date"
-        @input="atualizarCampo('data', $event.target.value)"
+        @input="updateField('coupleDate', $event.target.value)"
       />
-      <strong v-else class="valor-publico">{{ dataFormatada }}</strong
+      <strong v-else class="valor-publico">{{ formattedDate }}</strong
       >.
     </p>
 
@@ -74,12 +78,12 @@
 
     <section class="assinaturas">
       <div class="assinatura">
-        <span>{{ dados.nome1 || "Fulana(o)" }}</span>
+        <span>{{ certificate.partnerOneName || "Fulana(o)" }}</span>
         <small>Assinatura</small>
       </div>
       <div class="selo">Cartório<br />do Amor</div>
       <div class="assinatura">
-        <span>{{ dados.nome2 || "Ciclana(o)" }}</span>
+        <span>{{ certificate.partnerTwoName || "Ciclana(o)" }}</span>
         <small>Assinatura</small>
       </div>
     </section>
@@ -87,9 +91,9 @@
     <section class="validacao">
       <div class="qr-falso" aria-hidden="true">
         <i
-          v-for="indice in 36"
-          :key="indice"
-          :class="{ preenchido: quadradosPreenchidos.has(indice) }"
+          v-for="index in 36"
+          :key="index"
+          :class="{ preenchido: filledSquares.has(index) }"
         ></i>
       </div>
       <span>Código de validação<br />(não escaneia nada)</span>
@@ -103,31 +107,31 @@
 
 <script setup>
 import { computed } from "vue";
-import { coresDeDestaque } from "../certidao";
+import { accentColors } from "../certificate";
 
 const props = defineProps({
-  dados: { type: Object, required: true },
-  editavel: { type: Boolean, default: false },
+  certificate: { type: Object, required: true },
+  editable: { type: Boolean, default: false },
 });
 
-const emit = defineEmits(["atualizar"]);
+const emit = defineEmits(["update"]);
 
-const quadradosPreenchidos = new Set([
+const filledSquares = new Set([
   1, 2, 3, 6, 7, 9, 11, 12, 13, 15, 16, 18, 21, 23, 24, 25, 27, 30, 31, 32, 34,
   36,
 ]);
-const corDeDestaque = computed(
-  () => coresDeDestaque[props.dados.accentKey] || coresDeDestaque.burgundy,
+const accentColor = computed(
+  () => accentColors[props.certificate.accentKey] || accentColors.burgundy,
 );
-const dataFormatada = computed(() => formatarData(props.dados.data));
+const formattedDate = computed(() => formatDate(props.certificate.coupleDate));
 
-function atualizarCampo(campo, valor) {
-  emit("atualizar", campo, valor);
+function updateField(field, value) {
+  emit("update", field, value);
 }
 
-function formatarData(data) {
-  if (!data) return "__ / __ / ____";
-  const [ano, mes, dia] = data.split("-");
-  return `${dia}/${mes}/${ano}`;
+function formatDate(date) {
+  if (!date) return "__ / __ / ____";
+  const [year, month, day] = date.split("-");
+  return `${day}/${month}/${year}`;
 }
 </script>

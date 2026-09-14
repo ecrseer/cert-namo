@@ -30,7 +30,7 @@ export class CertificatesService {
     });
 
     if (!certificate) {
-      throw new NotFoundException('Certidão não encontrada');
+      throw new NotFoundException('Certificate not found');
     }
 
     return certificate;

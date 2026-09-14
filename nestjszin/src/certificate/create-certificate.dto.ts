@@ -1,8 +1,33 @@
-import { IsDateString, IsOptional, IsString, IsBoolean } from 'class-validator';
+import {
+  IsBoolean,
+  IsDateString,
+  IsIn,
+  IsNotEmpty,
+  IsOptional,
+  IsString,
+  MaxLength,
+} from 'class-validator';
 
 export class CreateCertificateDto {
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(38)
+  partnerOneName: string;
+
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(38)
+  partnerTwoName: string;
+
   @IsDateString()
   coupleDate: string;
+
+  @IsString()
+  @MaxLength(48)
+  location: string;
+
+  @IsIn(['burgundy', 'gold', 'teal'])
+  accentKey: string;
 
   @IsOptional()
   @IsString()
