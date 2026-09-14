@@ -1,18 +1,18 @@
 import { IsDateString, IsOptional, IsString, IsBoolean } from 'class-validator';
 
-export class CriarCertidaoDto {
+export class CreateCertificateDto {
   @IsDateString()
-  dataCasal: string;
+  coupleDate: string;
 
   @IsOptional()
   @IsString()
-  mensagemEspecial?: string;
+  specialMessage?: string;
 
   @IsOptional()
   @IsString()
-  modelo?: string;
+  template?: string;
 
   @IsOptional()
   @IsBoolean()
-  mostrarPontuacaoPublica?: boolean;
+  showPublicScore?: boolean;
 }

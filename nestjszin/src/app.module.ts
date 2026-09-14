@@ -1,9 +1,11 @@
 import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ScheduleModule } from '@nestjs/schedule';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { AppController } from './app.controller.js';
 import { AppService } from './app.service.js';
-import { CertidoesModule } from './certidao/certidoes.module.js';
+import { CertificatesModule } from './certificate/certificates.module.js';
+import { GabjPingConnections } from './gabj-ping-connections.service.js';
 
 @Module({
   imports: [
@@ -11,6 +13,7 @@ import { CertidoesModule } from './certidao/certidoes.module.js';
       envFilePath: '.env',
       isGlobal: true,
     }),
+    ScheduleModule.forRoot(),
     ...(process.env.DATABASE_URL
       ? [
           TypeOrmModule.forRootAsync({
@@ -19,14 +22,14 @@ import { CertidoesModule } from './certidao/certidoes.module.js';
               type: 'postgres' as const,
               url: configService.getOrThrow<string>('DATABASE_URL'),
               autoLoadEntities: true,
-              synchronize: false,
+              synchronize: true,
             }),
           }),
         ]
       : []),
-    CertidoesModule,
+    CertificatesModule,
   ],
   controllers: [AppController],
-  providers: [AppService],
+  providers: [AppService, GabjPingConnections],
 })
 export class AppModule {}
