@@ -328,7 +328,6 @@ button {
   bottom: 0;
   left: 0;
   width: 100%;
-  max-width: 480px;
   margin: auto;
   padding: 11px 16px max(12px, env(safe-area-inset-bottom));
   border-top: 1px solid oklch(75% 0.025 75 / 35%);
@@ -438,6 +437,10 @@ p:not(.nome-publico) {
     width: 55px;
     height: 55px;
   }
+
+  .acoes {
+    max-width: 480px;
+  }
 }
 
 @media (min-width: 481px) {
@@ -455,6 +458,10 @@ p:not(.nome-publico) {
 
   .app-shell {
     width: 100%;
+    max-width: 100%;
+  }
+
+  .acoes {
     max-width: 100%;
   }
 }

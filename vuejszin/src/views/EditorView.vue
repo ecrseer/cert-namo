@@ -123,10 +123,6 @@ async function createAndCopyLink() {
   }
 }
 
-function showDownloadNotice() {
-  showToast("Download de imagem chega em breve.");
-}
-
 function showToast(message) {
   clearTimeout(toastTimer);
   toast.value = message;
