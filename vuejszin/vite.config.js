@@ -7,7 +7,7 @@ export default defineConfig({
   server: {
     proxy: {
       "/vrcel": {
-        target: "https://cert-namo.onrender.com/",
+        target: "http://localhost:4242",
         changeOrigin: true,
         rewrite: (path) => path.replace(/^\/vrcel/, ""),
       },

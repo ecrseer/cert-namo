@@ -14,7 +14,7 @@ export const initialCertificate = {
 
 const apiBaseUrl =
   import.meta.env.VITE_API_BASE_URL ||
-  (import.meta.env.DEV ? "/api" : "https://cert-namo.onrender.com");
+  (import.meta.env.DEV ? "/vrcel" : "https://cert-namo.onrender.com");
 
 async function request(path, options) {
   const response = await fetch(`${apiBaseUrl}${path}`, options);
