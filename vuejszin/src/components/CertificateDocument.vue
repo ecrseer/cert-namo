@@ -19,8 +19,8 @@
       maxlength="38"
       @input="updateField('partnerOneName', $event.target.value)"
     />
-    <p v-else class="nome-publico">
-      {{ certificate.partnerOneName || "Fulana(o)" }}
+    <p v-else class="nome-publico" :class="{ carregando: isLoading }">
+      {{ isLoading ? "Carregando..." : certificate.partnerOneName || "Fulana(o)" }}
     </p>
 
     <p class="conector">e</p>
@@ -34,8 +34,8 @@
       maxlength="38"
       @input="updateField('partnerTwoName', $event.target.value)"
     />
-    <p v-else class="nome-publico">
-      {{ certificate.partnerTwoName || "Ciclana(o)" }}
+    <p v-else class="nome-publico" :class="{ carregando: isLoading }">
+      {{ isLoading ? "Carregando..." : certificate.partnerTwoName || "Ciclana(o)" }}
     </p>
 
     <p class="texto-legal">
@@ -49,8 +49,8 @@
         maxlength="48"
         @input="updateField('location', $event.target.value)"
       />
-      <strong v-else class="valor-publico">{{
-        certificate.location || "algum lugar especial"
+      <strong v-else class="valor-publico" :class="{ carregando: isLoading }">{{
+        isLoading ? "Carregando..." : certificate.location || "algum lugar especial"
       }}</strong
       >, com efeitos retroativos a partir de
       <input
@@ -61,27 +61,43 @@
         type="date"
         @input="updateField('coupleDate', $event.target.value)"
       />
-      <strong v-else class="valor-publico">{{ formattedDate }}</strong
+      <strong v-else class="valor-publico" :class="{ carregando: isLoading }">{{
+        isLoading ? "Carregando..." : formattedDate
+      }}</strong
       >.
     </p>
 
-    <section class="clausula">
-      <h2>Cláusula única</h2>
-      <p>
-        O presente vínculo obriga ambas as partes a dividir a batata frita,
-        assistir séries no mesmo ritmo e jamais dormir de mau humor, sob pena de
-        multa em forma de abraço.
-      </p>
-    </section>
+    <CertificateClause
+      v-for="(clause, index) in clauses"
+      :key="clause.id"
+      :clause="clause"
+      :number="index + 1"
+      :editable="editable"
+      :is-loading="isLoading"
+      @update-text="updateClauseText(clause.id, $event)"
+      @remove="removeClause(clause.id)"
+    />
+    <button
+      v-if="editable"
+      class="adicionar-clausula"
+      type="button"
+      @click="addClause"
+    >
+      + Adicionar cláusula
+    </button>
 
     <section class="assinaturas">
       <div class="assinatura">
-        <span>{{ certificate.partnerOneName || "Fulana(o)" }}</span>
+        <span :class="{ carregando: isLoading }">{{
+          isLoading ? "Carregando..." : certificate.partnerOneName || "Fulana(o)"
+        }}</span>
         <small>Assinatura</small>
       </div>
       <div class="selo">Cartório<br />do Amor</div>
       <div class="assinatura">
-        <span>{{ certificate.partnerTwoName || "Ciclana(o)" }}</span>
+        <span :class="{ carregando: isLoading }">{{
+          isLoading ? "Carregando..." : certificate.partnerTwoName || "Ciclana(o)"
+        }}</span>
         <small>Assinatura</small>
       </div>
     </section>
@@ -106,10 +122,12 @@
 <script setup>
 import { computed } from "vue";
 import { accentColors } from "../certificate";
+import CertificateClause from "./CertificateClause.vue";
 
 const props = defineProps({
   certificate: { type: Object, required: true },
   editable: { type: Boolean, default: false },
+  isLoading: { type: Boolean, default: false },
 });
 
 const emit = defineEmits(["update"]);
@@ -122,9 +140,33 @@ const accentColor = computed(
   () => accentColors[props.certificate.accentKey] || accentColors.burgundy,
 );
 const formattedDate = computed(() => formatDate(props.certificate.coupleDate));
+const clauses = computed(() => props.certificate.clauses || []);
 
 function updateField(field, value) {
   emit("update", field, value);
+}
+
+function addClause() {
+  updateField("clauses", [
+    ...clauses.value,
+    { id: crypto.randomUUID(), text: "" },
+  ]);
+}
+
+function updateClauseText(clauseId, text) {
+  updateField(
+    "clauses",
+    clauses.value.map((clause) =>
+      clause.id === clauseId ? { ...clause, text } : clause,
+    ),
+  );
+}
+
+function removeClause(clauseId) {
+  updateField(
+    "clauses",
+    clauses.value.filter((clause) => clause.id !== clauseId),
+  );
 }
 
 function formatDate(date) {
@@ -202,6 +244,9 @@ function formatDate(date) {
 .nome-publico {
   border-bottom-color: transparent;
 }
+.carregando {
+  opacity: 0.58;
+}
 .conector {
   margin: 1px 0;
   font-size: 11px;
@@ -234,23 +279,16 @@ function formatDate(date) {
 .valor-publico {
   border-bottom: 1px dashed var(--accent);
 }
-.clausula {
-  margin: 0;
-  padding: 12px 5px;
-  border-top: 1px dashed oklch(60% 0.09 80 / 65%);
-  border-bottom: 1px dashed oklch(60% 0.09 80 / 65%);
-}
-.clausula h2 {
-  margin: 0 0 6px;
+.adicionar-clausula {
+  display: block;
+  margin: 10px auto 0;
+  padding: 0;
+  border: 0;
+  background: transparent;
   color: var(--accent);
+  font: inherit;
   font-size: 9px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-}
-.clausula p {
-  margin: 0;
-  font-size: 9.5px;
-  line-height: 1.6;
+  text-decoration: underline;
 }
 .assinaturas {
   display: grid;

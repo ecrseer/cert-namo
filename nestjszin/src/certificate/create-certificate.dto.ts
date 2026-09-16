@@ -1,4 +1,5 @@
 import {
+  IsArray,
   IsBoolean,
   IsDateString,
   IsIn,
@@ -6,7 +7,17 @@ import {
   IsOptional,
   IsString,
   MaxLength,
+  ValidateNested,
 } from 'class-validator';
+import { Type } from 'class-transformer';
+
+class CertificateClauseDto {
+  @IsString()
+  id: string;
+
+  @IsString()
+  text: string;
+}
 
 export class CreateCertificateDto {
   @IsString()
@@ -28,6 +39,11 @@ export class CreateCertificateDto {
 
   @IsIn(['burgundy', 'gold', 'teal'])
   accentKey: string;
+
+  @IsArray()
+  @ValidateNested({ each: true })
+  @Type(() => CertificateClauseDto)
+  clauses: CertificateClauseDto[];
 
   @IsOptional()
   @IsString()

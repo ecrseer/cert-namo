@@ -14,6 +14,11 @@ export enum CertificateStatus {
   REVOKED = 'revoked',
 }
 
+export type CertificateClause = {
+  id: string;
+  text: string;
+};
+
 @Entity('certificates')
 export class Certificate {
   @PrimaryGeneratedColumn({ type: 'bigint' })
@@ -51,6 +56,9 @@ export class Certificate {
     default: 'burgundy',
   })
   accentKey: string;
+
+  @Column({ type: 'jsonb', default: () => "'[]'" })
+  clauses: CertificateClause[];
 
   @Column({ type: 'text', name: 'special_message', nullable: true })
   specialMessage: string | null;

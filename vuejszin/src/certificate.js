@@ -4,13 +4,26 @@ export const accentColors = {
   teal: "oklch(50% 0.1 180)",
 };
 
-export const initialCertificate = {
-  partnerOneName: "",
-  partnerTwoName: "",
-  coupleDate: "",
-  location: "",
-  accentKey: "burgundy",
-};
+export const defaultClauseText =
+  "O presente vínculo obriga ambas as partes a dividir a batata frita, assistir séries no mesmo ritmo e jamais dormir de mau humor, sob pena de multa em forma de abraço.";
+
+export function createInitialCertificate() {
+  return {
+    partnerOneName: "",
+    partnerTwoName: "",
+    coupleDate: "",
+    location: "",
+    accentKey: "burgundy",
+    clauses: [
+      {
+        id: crypto.randomUUID(),
+        text: defaultClauseText,
+      },
+    ],
+  };
+}
+
+export const initialCertificate = createInitialCertificate();
 
 const apiBaseUrl =
   import.meta.env.VITE_API_BASE_URL ||

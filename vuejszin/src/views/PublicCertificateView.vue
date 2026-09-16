@@ -1,8 +1,10 @@
 <template>
   <main class="app-shell pagina-publica">
-    <p v-if="isLoading" class="estado-vazio">Carregando certidão...</p>
-
-    <CertificateDocument v-else-if="certificate" :certificate="certificate" />
+    <CertificateDocument
+      v-if="isLoading || certificate"
+      :certificate="certificate || initialCertificate"
+      :is-loading="isLoading"
+    />
 
     <section v-else class="estado-vazio">
       <h1>Certidão não encontrada</h1>
@@ -20,7 +22,7 @@
 import { onMounted, ref } from "vue";
 import { useRoute } from "vue-router";
 import CertificateDocument from "../components/CertificateDocument.vue";
-import { getCertificate } from "../certificate";
+import { getCertificate, initialCertificate } from "../certificate";
 
 const route = useRoute();
 const certificate = ref(null);

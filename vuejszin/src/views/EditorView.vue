@@ -64,11 +64,11 @@ import { useRouter } from "vue-router";
 import CertificateDocument from "../components/CertificateDocument.vue";
 import {
   accentColors,
+  createInitialCertificate,
   createCertificate,
-  initialCertificate,
 } from "../certificate";
 
-const certificate = reactive({ ...initialCertificate });
+const certificate = reactive(createInitialCertificate());
 const router = useRouter();
 const showBanner = ref(true);
 const toast = ref("");
