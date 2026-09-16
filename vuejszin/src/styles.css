@@ -35,23 +35,6 @@ button {
   box-shadow: 0 0 40px rgb(55 45 32 / 8%);
 }
 
-.cabecalho-app {
-  margin: 0 0 18px;
-  text-align: center;
-}
-.cabecalho-app p {
-  margin: 0 0 3px;
-  font-size: 12px;
-  font-weight: 700;
-  letter-spacing: 0.18em;
-  text-transform: uppercase;
-}
-.cabecalho-app span {
-  font-size: 13px;
-  font-style: italic;
-  opacity: 0.62;
-}
-
 .documento {
   position: relative;
   overflow: hidden;

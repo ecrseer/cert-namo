@@ -8,9 +8,7 @@
 
     <div class="divisoria"></div>
 
-    <p class="introducao">
-      Certificamos, para os devidos fins de direito (nenhum), que
-    </p>
+    <p class="introducao">Certificamos, para os devidos fins de direito, que</p>
 
     <input
       v-if="editable"
@@ -135,3 +133,220 @@ function formatDate(date) {
   return `${day}/${month}/${year}`;
 }
 </script>
+
+<style scoped>
+.documento {
+  position: relative;
+  overflow: hidden;
+  padding: 27px 22px 19px;
+  border: 2px solid oklch(60% 0.09 80);
+  border-radius: 16px;
+  outline: 1px solid oklch(60% 0.09 80 / 45%);
+  outline-offset: -7px;
+  background: oklch(97% 0.012 85);
+  box-shadow: 0 10px 30px rgb(71 56 32 / 9%);
+  text-align: center;
+}
+.fita {
+  position: absolute;
+  z-index: 1;
+  top: 14px;
+  right: -30px;
+  width: 112px;
+  padding: 4px 0;
+  transform: rotate(45deg);
+  background: var(--accent);
+  color: white;
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+.documento h1 {
+  margin: 12px 0 8px;
+  font-size: clamp(23px, 6vw, 28px);
+  line-height: 1.1;
+}
+.divisoria {
+  width: 54px;
+  height: 2px;
+  margin: 0 auto 13px;
+  background: var(--accent);
+}
+.introducao {
+  margin: 0 5px 9px;
+  font-size: 11px;
+  font-style: italic;
+  line-height: 1.5;
+}
+.campo-nome,
+.nome-publico {
+  display: block;
+  width: min(92%, 330px);
+  min-height: 45px;
+  margin: 0 auto;
+  border: 0;
+  border-bottom: 1px dashed color-mix(in oklch, var(--accent), transparent 45%);
+  outline: 0;
+  background: transparent;
+  color: var(--accent);
+  font-family: "Great Vibes", cursive;
+  font-size: clamp(32px, 9vw, 40px);
+  line-height: 1.1;
+  text-align: center;
+}
+.campo-nome::placeholder {
+  color: color-mix(in oklch, var(--accent), transparent 50%);
+  opacity: 1;
+}
+.nome-publico {
+  border-bottom-color: transparent;
+}
+.conector {
+  margin: 1px 0;
+  font-size: 11px;
+  font-style: italic;
+}
+.texto-legal {
+  margin: 15px 0 16px;
+  font-size: 11px;
+  line-height: 2.05;
+  text-align: justify;
+}
+.campo-inline {
+  border: 0;
+  border-bottom: 1px dashed var(--accent);
+  border-radius: 0;
+  outline: 0;
+  background: transparent;
+  color: inherit;
+  font-size: 10px;
+  font-weight: 700;
+  text-align: center;
+}
+.campo-local {
+  width: 126px;
+}
+.campo-data {
+  width: 111px;
+  color-scheme: light;
+}
+.valor-publico {
+  border-bottom: 1px dashed var(--accent);
+}
+.clausula {
+  margin: 0;
+  padding: 12px 5px;
+  border-top: 1px dashed oklch(60% 0.09 80 / 65%);
+  border-bottom: 1px dashed oklch(60% 0.09 80 / 65%);
+}
+.clausula h2 {
+  margin: 0 0 6px;
+  color: var(--accent);
+  font-size: 9px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+}
+.clausula p {
+  margin: 0;
+  font-size: 9.5px;
+  line-height: 1.6;
+}
+.assinaturas {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 66px minmax(0, 1fr);
+  align-items: end;
+  gap: 8px;
+  margin: 22px 0 18px;
+}
+.assinatura span {
+  display: block;
+  overflow: hidden;
+  padding: 0 2px 2px;
+  border-bottom: 1px solid oklch(40% 0.02 45 / 60%);
+  font-family: "Great Vibes", cursive;
+  font-size: 19px;
+  line-height: 1;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.assinatura small {
+  display: block;
+  margin-top: 4px;
+  font-size: 7px;
+  opacity: 0.58;
+}
+.selo {
+  display: grid;
+  width: 61px;
+  height: 61px;
+  place-content: center;
+  border: 1.5px dashed var(--accent);
+  border-radius: 50%;
+  transform: rotate(-8deg);
+  color: var(--accent);
+  font-size: 7px;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  line-height: 1.35;
+  text-transform: uppercase;
+}
+.validacao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+}
+.qr-falso {
+  display: grid;
+  width: 36px;
+  height: 36px;
+  padding: 2px;
+  border: 1px solid oklch(25% 0 0);
+  grid-template-columns: repeat(6, 1fr);
+  gap: 1px;
+  background: white;
+}
+.qr-falso i {
+  display: block;
+  background: white;
+}
+.qr-falso i.preenchido {
+  background: oklch(18% 0 0);
+}
+.validacao span {
+  font-size: 7px;
+  line-height: 1.45;
+  opacity: 0.55;
+  text-align: left;
+}
+.documento footer {
+  margin-top: 15px;
+  font-size: 9px;
+  font-style: italic;
+  opacity: 0.5;
+}
+.documento p:not(.nome-publico) {
+  font-size: 0.842rem;
+}
+
+@media (max-width: 370px) {
+  .documento {
+    padding-right: 17px;
+    padding-left: 17px;
+  }
+  .assinaturas {
+    grid-template-columns: minmax(0, 1fr) 58px minmax(0, 1fr);
+    gap: 5px;
+  }
+  .selo {
+    width: 55px;
+    height: 55px;
+  }
+}
+@media (min-width: 1024px) {
+  .documento p:not(.nome-publico) {
+    font-size: 2rem;
+  }
+}
+</style>

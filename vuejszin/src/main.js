@@ -3,7 +3,6 @@ import { createRouter, createWebHistory } from "vue-router";
 import App from "./App.vue";
 import EditorView from "./views/EditorView.vue";
 import PublicCertificateView from "./views/PublicCertificateView.vue";
-import "./styles.css";
 
 const router = createRouter({
   history: createWebHistory(),

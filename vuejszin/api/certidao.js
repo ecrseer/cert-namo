@@ -40,9 +40,6 @@ function montarHtmlDaCertidao(certidao) {
       * { box-sizing: border-box; }
       body { min-width: 320px; min-height: 100vh; margin: 0; background: #eeeae2; }
       main { width: 100%; max-width: 480px; min-height: 100vh; margin: 0 auto; padding: 22px 16px 34px; background: #faf8f3; box-shadow: 0 0 40px rgb(55 45 32 / 8%); }
-      .cabecalho { margin-bottom: 18px; text-align: center; }
-      .cabecalho strong { display: block; font-size: 12px; letter-spacing: .18em; text-transform: uppercase; }
-      .cabecalho span { font-size: 13px; font-style: italic; opacity: .62; }
       .documento { position: relative; overflow: hidden; padding: 27px 22px 19px; border: 2px solid #b09565; border-radius: 16px; outline: 1px solid rgb(176 149 101 / 45%); outline-offset: -7px; background: #faf6e9; box-shadow: 0 10px 30px rgb(71 56 32 / 9%); text-align: center; }
       .fita { position: absolute; top: 14px; right: -30px; width: 112px; padding: 4px 0; transform: rotate(45deg); background: ${cor}; color: white; font-size: 7px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; }
       .cartorio p { margin: 0; font-size: 12px; font-weight: 600; letter-spacing: .13em; line-height: 1.55; opacity: .75; text-transform: uppercase; }
@@ -72,10 +69,6 @@ function montarHtmlDaCertidao(certidao) {
   </head>
   <body>
     <main>
-      <header class="cabecalho">
-        <strong>Certidão de Namorado</strong>
-        <span>Prova oficial (não really) do seu amor</span>
-      </header>
       <article class="documento">
         <div class="fita">Selo Oficial</div>
         <header class="cartorio">
